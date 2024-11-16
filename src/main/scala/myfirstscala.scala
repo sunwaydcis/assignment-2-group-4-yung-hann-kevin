@@ -1,5 +1,6 @@
 import scalafx.application.JFXApp3
 import scalafx.application.JFXApp3.PrimaryStage
+import java.io.FileReader
 
 object MyApp extends JFXApp3:
 

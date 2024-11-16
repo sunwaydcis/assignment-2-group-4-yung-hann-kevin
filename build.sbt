@@ -19,6 +19,12 @@ lazy val root = (project in file("."))
     },
     libraryDependencies ++= Seq("org.scalafx" %% "scalafx" % "21.0.0-R32")
   )
+
+lazy val example = project.in(file("."))
+  .settings(
+    scalaVersion := "3.3.3",
+    libraryDependencies += "org.scala-lang" %% "toolkit" % "0.1.7"
+  )
 //enable for sbt-assembly
 //assembly / assemblyMergeStrategy := {
 //  case PathList("META-INF", xs @ _*) => MergeStrategy.discard // Discard all META-INF files
