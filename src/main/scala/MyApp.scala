@@ -11,6 +11,8 @@ object MyApp extends JFXApp3:
     println(line)
   }
 
+  
+
   override def start(): Unit =
     stage = new PrimaryStage()
 
