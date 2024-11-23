@@ -32,4 +32,13 @@ class State(val date: String, val state: String, val beds: Int, val bedsCovid: I
   // Calculate the ratio of Covid beds to total beds
   val ratioCovidBed = (totalBedsCovid.toDouble / totalBeds)
   println(s"Ratio Covid Bed: $ratioCovidBed")
+
+  // Filter Johor states
+  val johorStates = states.filter(_.state == "Johor")
+  // Calculate number of instances of Johor states
+  val numJohorStates = johorStates.length
+  println(s"Number of Johor States: $numJohorStates")
+  // Calculate the total number of admitted patients throughout all Johor dataset
+  val totalAdmittedJohor = johorStates.map(_.admittedTotal).sum
+  println(s"Total Admitted Johor: $totalAdmittedJohor")
 }
