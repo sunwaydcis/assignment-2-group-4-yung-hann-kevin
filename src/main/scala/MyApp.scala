@@ -21,9 +21,11 @@ class State(val date: String, val state: String, val beds: Int, val bedsCovid: I
     new State(date, state, beds.toInt, bedsCovid.toInt, bedsNoncrit.toInt, admittedPui.toInt, admittedCovid.toInt, admittedTotal.toInt, dischargedPui.toInt, dischargedCovid.toInt, dischargedTotal.toInt, hospCovid.toInt, hospPui.toInt, hospNoncovid.toInt)
   }.toList
 
+
   // Find the state with the most beds
   val stateWithMostBeds = states.maxBy(_.beds)
   stateWithMostBeds.displayInfo()
+
 
   // Calculate the total number of beds
   val totalBeds = states.map(_.beds).sum
@@ -33,12 +35,14 @@ class State(val date: String, val state: String, val beds: Int, val bedsCovid: I
   val ratioCovidBed = (totalBedsCovid.toDouble / totalBeds)
   println(s"Ratio Covid Bed: $ratioCovidBed")
 
+
   // Filter Johor states
   val johorStates = states.filter(_.state == "Johor")
   // Calculate number of instances of Johor states
   val numJohorStates = johorStates.length
-  println(s"Number of Johor States: $numJohorStates")
   // Calculate the total number of admitted patients throughout all Johor dataset
   val totalAdmittedJohor = johorStates.map(_.admittedTotal).sum
-  println(s"Total Admitted Johor: $totalAdmittedJohor")
+  // Calculate the average number of admitted patients in Johor
+  val avgAdmittedJohor = totalAdmittedJohor.toDouble / numJohorStates
+  println(s"Average admitted patients in Johor: $avgAdmittedJohor")
 }
