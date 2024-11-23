@@ -24,4 +24,12 @@ class State(val date: String, val state: String, val beds: Int, val bedsCovid: I
   // Find the state with the most beds
   val stateWithMostBeds = states.maxBy(_.beds)
   stateWithMostBeds.displayInfo()
+
+  // Calculate the total number of beds
+  val totalBeds = states.map(_.beds).sum
+  // Calculate the total number of Covid beds
+  val totalBedsCovid = states.map(_.bedsCovid).sum
+  // Calculate the ratio of Covid beds to total beds
+  val ratioCovidBed = (totalBedsCovid.toDouble / totalBeds)
+  println(s"Ratio Covid Bed: $ratioCovidBed")
 }
