@@ -6,8 +6,11 @@ class State(val date: String, val state: String, val beds: Int, val bedsCovid: I
   def displayInfo(): Unit = {
     println(s"Date: $date, State: $state, Beds: $beds, Beds Covid: $bedsCovid, Beds Non-Critical: $bedsNoncrit, Admitted PUI: $admittedPui, Admitted Covid: $admittedCovid, Admitted Total: $admittedTotal, Discharged PUI: $dischargedPui, Discharged Covid: $dischargedCovid, Discharged Total: $dischargedTotal, Hospitalized Covid: $hospCovid, Hospitalized PUI: $hospPui, Hospitalized Non-Covid: $hospNoncovid")
   }
-  def displayState() : Unit = {
-    println(s"$state")
+  def displayStateBeds() : Unit = {
+    println(s"The state with the most amount of beds is $state with a total amount of $beds beds")
+  }
+  def displayBeds() : Unit = {
+    println(s"$beds")
   }
 }
 
@@ -27,8 +30,7 @@ class State(val date: String, val state: String, val beds: Int, val bedsCovid: I
 
   // Find the state with the most beds
   val stateWithMostBeds = states.maxBy(_.beds)
-  print(s"The state with the most beds is: ")
-  stateWithMostBeds.displayState()
+  stateWithMostBeds.displayStateBeds()
   println(s"\n=========================================================================================\n")
 
   // Calculate the total number of beds
