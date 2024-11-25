@@ -41,7 +41,14 @@ class State(val date: String, val state: String, val beds: Int, val bedsCovid: I
   statesGrouped.foreach { case (stateKey, stateList) =>
     val numStates = stateList.length
     val totalAdmitted = stateList.map(_.admittedTotal).sum
-    val avgAdmitted = totalAdmitted.toDouble / numStates
-    println(s"Average admitted patients in $stateKey: ${Math.ceil(avgAdmitted).toInt}")
+    val totalAdmittedCovid = stateList.map(_.admittedCovid).sum
+    val totalAdmittedPui = stateList.map(_.admittedPui).sum
+    val avgAdmittedTotal = totalAdmitted.toDouble / numStates
+    val avgAdmittedCovid = totalAdmittedCovid.toDouble / numStates
+    val avgAdmittedPui = totalAdmittedPui.toDouble / numStates
+    println(s"Average admitted patients in $stateKey: ${Math.ceil(avgAdmittedTotal).toInt}")
+    println(s"Average admitted patients in $stateKey for Covid: ${Math.ceil(avgAdmittedCovid).toInt}")
+    println(s"Average admitted patients in $stateKey for Non-Covid: ${Math.ceil(avgAdmittedPui).toInt}")
+    println(s"=========================================================================================")
   }
 }
