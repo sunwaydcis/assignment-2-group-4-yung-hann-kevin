@@ -35,14 +35,13 @@ class State(val date: String, val state: String, val beds: Int, val bedsCovid: I
   val ratioCovidBed = (totalBedsCovid.toDouble / totalBeds)
   println(s"Ratio Covid Bed: $ratioCovidBed")
 
-
-  // Filter Johor states
-  val johorStates = states.filter(_.state == "Johor")
-  // Calculate number of instances of Johor states
-  val numJohorStates = johorStates.length
-  // Calculate the total number of admitted patients throughout all Johor dataset
-  val totalAdmittedJohor = johorStates.map(_.admittedTotal).sum
-  // Calculate the average number of admitted patients in Johor
-  val avgAdmittedJohor = totalAdmittedJohor.toDouble / numJohorStates
-  println(s"Average admitted patients in Johor: $avgAdmittedJohor")
+  
+  // Calculate the average number of admitted patients by state
+  val statesGrouped = states.groupBy(_.state)
+  statesGrouped.foreach { case (stateKey, stateList) =>
+    val numStates = stateList.length
+    val totalAdmitted = stateList.map(_.admittedTotal).sum
+    val avgAdmitted = totalAdmitted.toDouble / numStates
+    println(s"Average admitted patients in $stateKey: $avgAdmitted")
+  }
 }
