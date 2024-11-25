@@ -42,6 +42,6 @@ class State(val date: String, val state: String, val beds: Int, val bedsCovid: I
     val numStates = stateList.length
     val totalAdmitted = stateList.map(_.admittedTotal).sum
     val avgAdmitted = totalAdmitted.toDouble / numStates
-    println(s"Average admitted patients in $stateKey: $avgAdmitted")
+    println(s"Average admitted patients in $stateKey: ${Math.ceil(avgAdmitted).toInt}")
   }
 }
