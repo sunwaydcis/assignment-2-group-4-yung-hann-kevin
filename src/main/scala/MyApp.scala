@@ -1,40 +1,23 @@
 import scala.io.Source
 
 // Represents a state
-abstract class States(val date: String, val state: String, val beds: Int, val bedsCovid: Int, val bedsNoncrit: Int, val admittedPui: Int, val admittedCovid: Int, val admittedTotal: Int, val dischargedPui: Int, val dischargedCovid: Int, val dischargedTotal: Int, val hospCovid: Int, val hospPui: Int, val hospNoncovid: Int) {
+case class States(val date: String, val state: String, val beds: Int, val bedsCovid: Int, val bedsNoncrit: Int, val admittedPui: Int, val admittedCovid: Int, val admittedTotal: Int, val dischargedPui: Int, val dischargedCovid: Int, val dischargedTotal: Int, val hospCovid: Int, val hospPui: Int, val hospNoncovid: Int) {
   // Method to display the state information
-  def displayInfo(): Unit = {}
-}
-
-class DefaultStates(val _date: String,
-                    val _state: String,
-                    val _beds: Int,
-                    val _bedsCovid: Int,
-                    val _bedsNoncrit: Int,
-                    val _admittedPui: Int,
-                    val _admittedCovid: Int,
-                    val _admittedTotal: Int,
-                    val _dischargedPui: Int,
-                    val _dischargedCovid: Int,
-                    val _dischargedTotal: Int,
-                    val _hospCovid: Int,
-                    val _hospPui: Int,
-                    val _hospNoncovid: Int) extends States(_date, _state, _beds, _bedsCovid, _bedsNoncrit, _admittedPui, _admittedCovid, _admittedTotal, _dischargedPui, _dischargedCovid, _dischargedTotal, _hospCovid, _hospPui, _hospNoncovid) {
-  override def displayInfo(): Unit = {
-    println(s"Date: $_date, State: $_state, Beds: $_beds, Beds Covid: $_bedsCovid, Beds Non-Critical: $_bedsNoncrit, Admitted PUI: $_admittedPui, Admitted Covid: $_admittedCovid, Admitted Total: $_admittedTotal, Discharged PUI: $_dischargedPui, Discharged Covid: $_dischargedCovid, Discharged Total: $_dischargedTotal, Hospitalized Covid: $_hospCovid, Hospitalized PUI: $_hospPui, Hospitalized Non-Covid: $_hospNoncovid")
+  def displayInfo(): Unit = {
+    println(s"Date: $date, State: $state, Beds: $beds, Beds Covid: $bedsCovid, Beds Non-Critical: $bedsNoncrit, Admitted PUI: $admittedPui, Admitted Covid: $admittedCovid, Admitted Total: $admittedTotal, Discharged PUI: $dischargedPui, Discharged Covid: $dischargedCovid, Discharged Total: $dischargedTotal, Hospitalized Covid: $hospCovid, Hospitalized PUI: $hospPui, Hospitalized Non-Covid: $hospNoncovid")
   }
 
-  def loadStates(filename: String): List[DefaultStates] = {
+  def loadStates(filename: String): List[States] = {
     val source = Source.fromResource(filename)
     val lines = source.getLines().drop(1) // Drop the header line
 
     lines.map { line =>
       val Array(date, state, beds, bedsCovid, bedsNoncrit, admittedPui, admittedCovid, admittedTotal, dischargedPui, dischargedCovid, dischargedTotal, hospCovid, hospPui, hospNoncovid) = line.split(",")
-      new DefaultStates(date, state, beds.toInt, bedsCovid.toInt, bedsNoncrit.toInt, admittedPui.toInt, admittedCovid.toInt, admittedTotal.toInt, dischargedPui.toInt, dischargedCovid.toInt, dischargedTotal.toInt, hospCovid.toInt, hospPui.toInt, hospNoncovid.toInt)
+      new States(date, state, beds.toInt, bedsCovid.toInt, bedsNoncrit.toInt, admittedPui.toInt, admittedCovid.toInt, admittedTotal.toInt, dischargedPui.toInt, dischargedCovid.toInt, dischargedTotal.toInt, hospCovid.toInt, hospPui.toInt, hospNoncovid.toInt)
     }.toList
   }
 
-  def calculateAverageAdmittedPatientsByState(states: List[DefaultStates]): Unit = {
+  def calculateAverageAdmittedPatientsByState(states: List[States]): Unit = {
     val statesGrouped = states.groupBy(_.state)
     statesGrouped.foreach { case (stateKey, stateList) =>
       val numStates = stateList.length
@@ -71,10 +54,10 @@ class CovidBedRatio(val _beds: Int,
   val filename = "hospital.csv"
 
   // Load the states from the CSV file
-  val states = new DefaultStates("", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0).loadStates(filename)
+  val states = new States("", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0).loadStates(filename)
 
   // Find the state with the most beds
-  val stateWithMostBedsObj = new StateWithMostBeds(states.maxBy(_.beds)._date, states.maxBy(_.beds).state, states.maxBy(_.beds)._beds)
+  val stateWithMostBedsObj = new StateWithMostBeds(states.maxBy(_.beds).date, states.maxBy(_.beds).state, states.maxBy(_.beds).beds)
   stateWithMostBedsObj.displayMaxBed()
   println(s"\n=========================================================================================\n")
 
@@ -85,7 +68,7 @@ class CovidBedRatio(val _beds: Int,
   println(s"\n=========================================================================================")
 
   // Create an instance of DefaultStates to call filter Johor
-  val defaultStatesObj = new DefaultStates("", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+  val defaultStatesObj = new States("", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
   // Calculate and print the average number of admitted patients by state
   defaultStatesObj.calculateAverageAdmittedPatientsByState(states)
 }
