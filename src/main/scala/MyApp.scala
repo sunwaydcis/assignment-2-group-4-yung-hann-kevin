@@ -42,8 +42,8 @@ class DefaultStates(val _date: String,
       val avgCovidAdmitted = (covidAdmitted.toDouble / numStates).round
       val nonCovidAdmitted = stateList.map(_.admittedPui).sum
       val avgNonCovidAdmitted = (nonCovidAdmitted.toDouble / numStates).round
-      println(s"Average admitted patients for COVID-19 in $stateKey: $avgCovidAdmitted")
-      println(s"Average admitted patients not for COVID-19 in $stateKey: $avgNonCovidAdmitted")
+      println(s"Average admitted patients per day for COVID-19 in $stateKey: $avgCovidAdmitted")
+      println(s"Average admitted patients per day not for COVID-19 in $stateKey: $avgNonCovidAdmitted")
       println(s"=========================================================================================")
     }
   }
