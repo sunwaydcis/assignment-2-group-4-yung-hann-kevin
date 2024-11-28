@@ -11,10 +11,10 @@ case class States(val date: String, val state: String, val beds: Int, val bedsCo
     val source = Source.fromResource(filename)
     val lines = source.getLines().drop(1) // Drop the header line
 
-    lines.map { line =>
+    lines.map(line => {
       val Array(date, state, beds, bedsCovid, bedsNoncrit, admittedPui, admittedCovid, admittedTotal, dischargedPui, dischargedCovid, dischargedTotal, hospCovid, hospPui, hospNoncovid) = line.split(",")
-      new States(date, state, beds.toInt, bedsCovid.toInt, bedsNoncrit.toInt, admittedPui.toInt, admittedCovid.toInt, admittedTotal.toInt, dischargedPui.toInt, dischargedCovid.toInt, dischargedTotal.toInt, hospCovid.toInt, hospPui.toInt, hospNoncovid.toInt)
-    }.toList
+      States(date, state, beds.toInt, bedsCovid.toInt, bedsNoncrit.toInt, admittedPui.toInt, admittedCovid.toInt, admittedTotal.toInt, dischargedPui.toInt, dischargedCovid.toInt, dischargedTotal.toInt, hospCovid.toInt, hospPui.toInt, hospNoncovid.toInt)
+    }).toList
   }
 
   def calculateAverageAdmittedPatientsByState(states: List[States]): Unit = {
