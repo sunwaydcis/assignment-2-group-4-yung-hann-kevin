@@ -16,20 +16,6 @@ case class States(val date: String, val state: String, val beds: Int, val bedsCo
       States(date, state, beds.toInt, bedsCovid.toInt, bedsNoncrit.toInt, admittedPui.toInt, admittedCovid.toInt, admittedTotal.toInt, dischargedPui.toInt, dischargedCovid.toInt, dischargedTotal.toInt, hospCovid.toInt, hospPui.toInt, hospNoncovid.toInt)
     }).toList
   }
-
-  def calculateAverageAdmittedPatientsByState(states: List[States]): Unit = {
-    val statesGrouped = states.groupBy(_.state)
-    statesGrouped.foreach { case (stateKey, stateList) =>
-      val numStates = stateList.length
-      val covidAdmitted = stateList.map(_.admittedCovid).sum
-      val avgCovidAdmitted = (covidAdmitted.toDouble / numStates).round
-      val nonCovidAdmitted = stateList.map(_.admittedPui).sum
-      val avgNonCovidAdmitted = (nonCovidAdmitted.toDouble / numStates).round
-      println(s"Average admitted patients per day for COVID-19 in $stateKey: $avgCovidAdmitted")
-      println(s"Average admitted patients per day not for COVID-19 in $stateKey: $avgNonCovidAdmitted")
-      println(s"=========================================================================================")
-    }
-  }
 }
 
 
@@ -47,6 +33,23 @@ class CovidBedRatio(val _beds: Int,
   def displayCovidBedRatio(): Unit = {
     val ratioCovidBed = (_bedsCovid.toDouble / _beds)
     println(s"The ratio of beds dedicated for COVID-19 patients to the total amount of available hospital beds is $_bedsCovid:$_beds or $ratioCovidBed")
+  }
+}
+
+
+class AverageStatePatients (val states:List[States]) {
+  def calculateAverageAdmittedPatientsByState(states: List[States]): Unit = {
+    val statesGrouped = states.groupBy(_.state)
+    statesGrouped.foreach { case (stateKey, stateList) =>
+      val numStates = stateList.length
+      val covidAdmitted = stateList.map(_.admittedCovid).sum
+      val avgCovidAdmitted = (covidAdmitted.toDouble / numStates).round
+      val nonCovidAdmitted = stateList.map(_.admittedPui).sum
+      val avgNonCovidAdmitted = (nonCovidAdmitted.toDouble / numStates).round
+      println(s"Average admitted patients per day for COVID-19 in $stateKey: $avgCovidAdmitted")
+      println(s"Average admitted patients per day not for COVID-19 in $stateKey: $avgNonCovidAdmitted")
+      println(s"=========================================================================================")
+    }
   }
 }
 
@@ -68,7 +71,8 @@ class CovidBedRatio(val _beds: Int,
   println(s"\n=========================================================================================")
 
   // Create an instance of DefaultStates to call filter Johor
-  val defaultStatesObj = new States("", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-  // Calculate and print the average number of admitted patients by state
-  defaultStatesObj.calculateAverageAdmittedPatientsByState(states)
+  // Create an instance of AverageStatePatients
+  val averageStatePatientsObj = new AverageStatePatients(states)
+  // Call the calculateAverageAdmittedPatientsByState method
+  averageStatePatientsObj.calculateAverageAdmittedPatientsByState(states)
 }
