@@ -7,6 +7,7 @@ case class States(val date: String, val state: String, val beds: Int, val bedsCo
     println(s"Date: $date, State: $state, Beds: $beds, Beds Covid: $bedsCovid, Beds Non-Critical: $bedsNoncrit, Admitted PUI: $admittedPui, Admitted Covid: $admittedCovid, Admitted Total: $admittedTotal, Discharged PUI: $dischargedPui, Discharged Covid: $dischargedCovid, Discharged Total: $dischargedTotal, Hospitalized Covid: $hospCovid, Hospitalized PUI: $hospPui, Hospitalized Non-Covid: $hospNoncovid")
   }
 
+  // Loads the data from the csv file into a list
   def loadStates(filename: String): List[States] = {
     val source = Source.fromResource(filename)
     val lines = source.getLines().drop(1) // Drop the header line
@@ -18,7 +19,7 @@ case class States(val date: String, val state: String, val beds: Int, val bedsCo
   }
 }
 
-
+// Displays which state has the most amount of beds
 class StateWithMostBeds(val _date: String,
                         val _state: String,
                         val _beds: Int) extends States(_date, _state, _beds, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0) {
@@ -27,7 +28,7 @@ class StateWithMostBeds(val _date: String,
   }
 }
 
-
+// Calculates and displays the ratio of beds for COVID-19 patients to total beds
 class CovidBedRatio(val _beds: Int,
                     val _bedsCovid: Int) extends States(null, null, _beds, _bedsCovid, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0) {
   def displayCovidBedRatio(): Unit = {
@@ -36,7 +37,7 @@ class CovidBedRatio(val _beds: Int,
   }
 }
 
-
+// Calculates the average amount of patients admitted everyday to hospitals throughout a state for either COVID-19 or non COVID-19 reasons
 class AverageStatePatients (val states:List[States]) {
   def calculateAverageAdmittedPatientsByState(states: List[States]): Unit = {
     val statesGrouped = states.groupBy(_.state)
@@ -70,7 +71,6 @@ class AverageStatePatients (val states:List[States]) {
   covidBedRatioObj.displayCovidBedRatio()
   println(s"\n=========================================================================================")
 
-  // Create an instance of DefaultStates to call filter Johor
   // Create an instance of AverageStatePatients
   val averageStatePatientsObj = new AverageStatePatients(states)
   // Call the calculateAverageAdmittedPatientsByState method
